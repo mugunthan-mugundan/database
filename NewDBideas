@@ -1,0 +1,17 @@
+### https://umbra-db.com/
+    - storage engine written from scratch
+    - completely isolated read-only transactions and one read/write transaction concurrently with a single lock to guard the writer. Readers will never be blocked by the single read/write transaction and execute without any latches/locks.
+    - variable sized pages
+    - lightweight buffer management with a "kind of" pointer swizzling
+    - dropping the need for a write ahead log due to atomic switching of an UberPage
+    - rolling merkle hash tree of all nodes built during updates optionally
+    - ID-based diff-algorithm to determine differences between revisions taking the (secure) hashes optionally into account
+    - non-blocking REST-API, which also takes the hashes into account to throw an error if a subtree has been modified in the meantime concurrently during updates
+    - versioning through a huge persistent and durable, variable sized page tree using copy-on-write
+    - storing delta page-fragments using a patented sliding snapshot algorithm
+    - using a special trie, which is especially good for storing records sith numerical dense, monotonically increasing 64 Bit integer IDs. We make heavy use of bit shifting to calculate the path to fetch a record
+    - time or modification counter based auto commit
+    - versioned, user-defined secondary index structures
+    - a versioned path summary
+    - indexing every revision, such that a timestamp is only stored once in a RevisionRootPage. The resources stored in SirixDB are based on a huge, persistent (functional) and durable tree 
+    - sophisticated time travel queries
